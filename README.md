@@ -42,3 +42,11 @@ First, we'll create a map object that stores all characters we've gotten so far.
 ```javascript
 const map = {}
 ```
+
+### a
+
+First, let's get 'a', to get a we have to get some constant in Javascript which we can convert to a string, one constant which has an a in it is NaN. To get NaN, we can use `+{}`, which creates an object and then converts that object to a number, which will result in NaN. Now that we have the constant, we have to convert it to a string by using `+[]`, because that for some reason converts in to a string. Then we can index by using our `number` function.
+
+```javascript
+
+```
