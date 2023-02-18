@@ -1,3 +1,8 @@
+const fs = require('fs'),
+    path = require('path'),
+    inputPath = path.join(__dirname, 'input.js'),
+    outputPath = path.join(__dirname, 'output.js');
+
 const zero = '+[]';
 const one = '+!![]';
 
@@ -40,6 +45,11 @@ map.C = `((()=>{})[${fromString('constructor')}](${fromString('return escape')})
 
 const compile = code => `(()=>{})[${fromString('constructor')}](${fromString(code)})()`;
 
-console.log(compile('console.log("Hello World!");'));
+fs.readFile(inputPath, (err, data) => {
+    if (err) throw err;
+    var result = compile(data.toString());
+    fs.writeFile(outputPath, result, err => {
+        if (err) throw err;
+    });
+});
 
-debugger;
