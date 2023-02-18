@@ -129,3 +129,34 @@ map.d = `(${number(13)})[${fromString('toString')}](${number(14)})`;
 map.h = `(${number(17)})[${fromString('toString')}](${number(18)})`;
 map.m = `(${number(22)})[${fromString('toString')}](${number(23)})`;
 ```
+
+### C
+
+So to get the last character needed to get every single other character, we have to think outside the box a bit, because this one is going to be a bit harder. We can start by creating a function using `()=>{}` and then getting a constructor from that, once we have a constructor we can create the body of the function using `(${fromString(return escape)})`, when we call that function, we get the escape function which allows us to get the escaped code from some characters. The one we are interested in is the escape code of '\', which will give us %5C. Then we index it to get C.
+
+```javascript
+map.C = `((()=>{})[${fromString('constructor')}](${fromString('return escape')})()(${map['\\']}))[${number(2)}]`;
+```
+
+## Every other character
+
+Now we can finally get every other character by using the String constructor again. First we create a String `[]+[]` then we get it's constructor, then we get the function `fromCharCode` and we pass in the charcode of the character we want (by passing it through number first of couse).
+
+```javascript
+const fromString = s => s.split('').map(x => {
+    if (x in map) return map[x];
+
+    const charCode = x.charCodeAt(0);
+    return `([]+[])[${fromString('constructor')}][${fromString('fromCharCode')}](${number(charCode)})`;
+}).join('+');
+```
+
+## Compile
+
+And now we finally have everything to be able to compile anything by using a function constructor and then running any arbitrary code in it.
+
+```javascript
+const compile = code => `(()=>{})[${fromString('constructor')}](${fromString(code)})()`;
+```
+
+
