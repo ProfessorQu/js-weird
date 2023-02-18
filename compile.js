@@ -14,11 +14,10 @@ const number = n => {
 const map = {};
 
 const fromString = s => s.split('').map(x => {
-    if (!(x in map)) {
-        const charCode = x.charCodeAt(0);
-        return `([]+[])[${fromString('constructor')}][${fromString('fromCharCode')}](${number(charCode)})`;
-    }
-    return map[x];
+    if (x in map) return map[x];
+
+    const charCode = x.charCodeAt(0);
+    return `([]+[])[${fromString('constructor')}][${fromString('fromCharCode')}](${number(charCode)})`;
 }).join('+');
 
 map.a = `(+{}+[])[${number(1)}]`;
