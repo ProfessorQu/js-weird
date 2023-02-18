@@ -52,4 +52,3 @@ fs.readFile(inputPath, (err, data) => {
         if (err) throw err;
     });
 });
-
