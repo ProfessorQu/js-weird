@@ -1,7 +1,7 @@
 # Weird Javascript
 
 Based on [Javascript is Weird (EXTREME EDITION)](https://www.youtube.com/watch?v=sRWE5tnaxlI) from [Low Byte Productions](https://www.youtube.com/watch?v=sRWE5tnaxlI).
-The premise of this program is simple, using only '[', ']', '{', '}', '(', ')', '+', '!', '=' and '>', create any javascript program. We do this by building up to every character, until eventually we have everything. Here, I'd like to outline how I did this.
+The premise of this program is simple, using only '[', ']', '{', '}', '(', ')', '+', '-', '!', '=', '>', '/' and '\', create any javascript program. We do this by building up to every character, until eventually we have everything. Here, I'd like to outline how I did this.
 
 ## Numbers
 
@@ -43,10 +43,89 @@ First, we'll create a map object that stores all characters we've gotten so far.
 const map = {}
 ```
 
-### a
+### NaN
 
-First, let's get 'a', to get a we have to get some constant in Javascript which we can convert to a string, one constant which has an a in it is NaN. To get NaN, we can use `+{}`, which creates an object and then converts that object to a number, which will result in NaN. Now that we have the constant, we have to convert it to a string by using `+[]`, because that for some reason converts in to a string. Then we can index by using our `number` function.
+First, let's get 'a', to get a we have to get some constant in Javascript which we can convert to a String, one constant which has an a in it is NaN. To get NaN, we can use `+{}`, which creates an object and then converts that object to a number, which will result in NaN. Now that we have the constant, we have to convert it to a String by using `+[]`, because that for some reason converts in to a string. Then we can index by using our `number` function.
 
 ```javascript
+map.a = `(+{}+[])[${number(1)}]`;
+```
 
+### [object Object]
+
+We can get a bunch of other letters by also using objects, but without casting them to integers. If you create an object using `{}`, and then convert it to a String, you'll get '[object Object]', from this we can get b, o, e, c, t and \[space].
+
+```javascript
+map.b = `({}+[])[${number(2)}]`;
+map.o = `({}+[])[${number(1)}]`;
+map.e = `({}+[])[${number(4)}]`;
+map.c = `({}+[])[${number(5)}]`;
+map.t = `({}+[])[${number(6)}]`;
+map[' '] = `({}+[])[${number(7)}]`;
+```
+
+### false
+
+We can also get a few letters by converting them to Strings using `+[]`, if we do this we can get f and s.
+
+```javascript
+map.f = `(![]+[])[${number(0)}]`;
+map.s = `(![]+[])[${number(3)}]`;
+```
+
+### true
+
+Then we just not that and we can get r and u.
+
+```javascript
+map.r = `(!![]+[])[${number(1)}]`;
+map.u = `(!![]+[])[${number(2)}]`;
+```
+
+### Infinity
+
+We can get another few letters by abusing another constant, Infinity, we can get this by dividing one, or any number, by zero. Then we can get i and n.
+
+```javascript
+map.i = `((+!![]/+[])+[])[${number(3)}]`;
+map.n = `((+!![]/+[])+[])[${number(4)}]`;
+```
+
+## constructor
+
+Now that we have all the letters to spell out constructor, we can use that to get a few things from some objects. But first, we'll create a function to use all characters we've collected to convert normal Strings to our special strings. We can do this with `fromString`, which will take in a String and convert it to our special string.
+
+```javascript
+const fromString = s => s.split('').map(x => {
+    return map[x];
+}).join('+');
+```
+
+
+### String
+
+First, let's use the String constructor, to do that we have to first create an empty String, which we can do of course with `[]+[]`, which will create an empty string. Then we want to get a constructor out of that by indexing, you can index by String instead of accessing a property of an object `([]+[])[${fromString('constructor')}]`. Then we have to convert that to a string by adding `+[]` and then index that String to get S and g.
+
+```javascript
+map.S = `([]+([]+[])[${fromString('constructor')}])[${number(9)}]`;
+map.g = `([]+([]+[])[${fromString('constructor')}])[${number(14)}]`;
+```
+
+### RegExp
+
+This is basically the same as with the String, only now where using a regular expression. Using the constructor we can get p, we can also get backslash by using a different regular expression.
+
+```javascript
+map.p = `([]+(/-/)[${fromString('constructor')}])[${number(14)}]`;
+map['\\'] = `(/\\\\/+[])[${number(1)}]`
+```
+
+### Different number systems
+
+To get the second to last few letters, we can use differnet number systems. With the `toString` method called on a number, we can pass in a number as an argument to determine what base we want. So we can just use our `number` and `fromString` methods to create it.
+
+```javascript
+map.d = `(${number(13)})[${fromString('toString')}](${number(14)})`;
+map.h = `(${number(17)})[${fromString('toString')}](${number(18)})`;
+map.m = `(${number(22)})[${fromString('toString')}](${number(23)})`;
 ```
